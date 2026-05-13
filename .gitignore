@@ -1,0 +1,45 @@
+# === Critical Security & Keys ===
+.env
+.env.local
+.env.*
+secrets.toml
+credentials.json
+
+# === Local Vector Databases (RAG Storage) ===
+# Prevents uploading your local vector stores generated during RAG processing
+chroma/
+faiss_index/
+.chroma/
+*.db
+
+# === Document Upload Testing Cache ===
+# Prevents uploading target test PDFs or documents to your public repository
+*.pdf
+*.docx
+*.txt
+!requirements.txt
+
+# === Python Runtime and Caches ===
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.gradio/
+flagged/
+
+# === Virtual Environments ===
+.venv/
+venv/
+env/
+chatbot_env/
+ENV/
+
+# === Operating System Files ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === IDE Configurations ===
+.vscode/
+.idea/
+*.swp

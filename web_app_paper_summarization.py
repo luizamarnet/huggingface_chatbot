@@ -4,9 +4,6 @@ from gradio_cutstom_theme import earth_yellow
 
 with gr.Blocks(theme=earth_yellow.theme, css=earth_yellow.css) as rag_application:
     
-    # Cabeçalho do App
-    gr.Markdown("# <center>My Own Personal Bot</center>")
-    gr.Markdown("<center>Upload a PDF document. The chatbot will extract key information using the provided document.</center>")
     
     '''# Add bloco HTML vazio com espaçamento vertical
     gr.HTML("<div style='height: 20px;'></div>")'''
@@ -15,6 +12,10 @@ with gr.Blocks(theme=earth_yellow.theme, css=earth_yellow.css) as rag_applicatio
     with gr.Row():
         gr.Column(scale=1)  # Margem esquerda para empurrar pro centro
         
+        # Cabeçalho do App
+        gr.Markdown("# <center>My Own Personal Bot</center>")
+        gr.Markdown("<center>Upload a PDF document. The chatbot will extract key information using the provided document.</center>")
+            
         with gr.Column(scale=2):  # Bloco central do Upload
             pdf_input = gr.File(
                 label="Upload PDF File", 

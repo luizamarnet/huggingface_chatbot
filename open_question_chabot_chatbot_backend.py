@@ -15,7 +15,7 @@ import os
 
 load_dotenv()
 
-huggingfacehub_api_token = os.getenv("OPENAI_API_KEY")
+huggingfacehub_api_token = os.getenv("OPENAI_API_KEY").strip()
 ## 1. LLM (Hugging Face version)
 def get_llm():
     model_id = "meta-llama/Meta-Llama-3-8B-Instruct" 

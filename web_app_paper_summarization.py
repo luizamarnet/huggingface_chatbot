@@ -38,25 +38,26 @@ with gr.Blocks(theme=earth_yellow.theme, css=earth_yellow.css) as rag_applicatio
         # Coluna da Esquerda: Título e Tópico (Sumário)
         with gr.Column(scale=1):
             out_title = gr.Textbox(label="Paper Title", interactive=False, lines=2)
-            out_topic = gr.Textbox(label="Paper Topic", interactive=False, lines=8)
+            out_authors = gr.Textbox(label="Paper Authors", interactive=False, lines=2)
+            out_affiliation = gr.Textbox(label="Authors Affiliation", interactive=False, lines=2)
             
         # Coluna da Direita: Autores e Conclusões
         with gr.Column(scale=1):
-            out_authors = gr.Textbox(label="Paper Authors", interactive=False, lines=2)
+            out_topic = gr.Textbox(label="Paper Topic", interactive=False, lines=8)
             out_conclusions = gr.Textbox(label="Paper Conclusions", interactive=False, lines=8)
 
     # --- MAPEAMENTO DAS AÇÕES DOS BOTÕES ---
     submit_btn.click(
         fn=retriever_qa,
         inputs=[pdf_input],
-        outputs=[out_title, out_authors, out_topic, out_conclusions]
+        outputs=[out_title, out_authors, out_affiliation, out_topic, out_conclusions]
     )
     
     # Ação do botão limpar (esvazia todos os campos)
     clear_btn.click(
-        fn=lambda: [None, "", "", "", ""],
+        fn=lambda: [None, "", "", "", "", ""],
         inputs=[],
-        outputs=[pdf_input, out_title, out_authors, out_topic, out_conclusions]
+        outputs=[pdf_input, out_title, out_authors, out_affiliation, out_topic, out_conclusions]
     )
 
 if __name__ == "__main__":

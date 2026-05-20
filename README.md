@@ -2,7 +2,7 @@
 title: Chatbot Longchain
 emoji: 🤖
 colorFrom: yellow
-colorTo: brown
+colorTo: red
 sdk: gradio
 sdk_version: 4.44.1
 app_file: web_app_paper_summarization.py

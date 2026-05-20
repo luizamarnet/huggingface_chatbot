@@ -150,12 +150,13 @@ def retriever_qa(file):
     4. Focus heavily on explicit paper abstract, goals, core methodologies, results, and conclusions.
     5. If you can infer the answer from results, do not write disclaimers about information not being explicit.
     6. Do not try to make up or guess information. If you could not retrieve the answer from the text, just say it.
+    8. STRICT CONSTRAINT: For every fact you extract, you MUST provide a short 'Search phrase' verbatim quote. This Search phrase MUST BE EXACTLY BETWEEN 4 AND 5 WORDS. NEVER exceed 5 words per Search phrase.
     7. Answer examples: 
         (a) The model achieves X [Page 4, Section M](Search phrase: "Our empirical findings indicate")
         (b) The model achieves X [Page 4, Section M](Search phrases: "Our empirical findings indicate", "The gain percentage was")
         (b) The model achieves X [Page 4, Section M](Search phrases: "Our empirical findings indicate")[Page 7, Section N](Search phrases: "The gain percentage was")
-    8. STRICT CONSTRAINT FOR SEARCH PHRASES: For every fact you extract, you MUST provide a short 'Search phrase' verbatim quote. This quote MUST BE EXACTLY BETWEEN 4 AND 5 WORDS. NEVER exceed 5 words per quote.
     9. Answering using the formatting presented in bullet point 7 is mandatory.
+    10. Remember this is a academic paper. Information with citations, which means, followed by a number inside parenthesis or with other authors names or attributed to other authors are not a goal, result or conclusion of the current paper.
 
     Context:
     {context}

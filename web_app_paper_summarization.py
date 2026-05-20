@@ -61,4 +61,6 @@ with gr.Blocks(theme=earth_yellow.theme, css=earth_yellow.css) as rag_applicatio
     )
 
 if __name__ == "__main__":
-    rag_application.launch(server_name="127.0.0.1", server_port=7860, share=True)
+    #rag_application.launch(server_name="127.0.0.1", server_port=7860, share=True)
+    rag_application.launch()  # Deixe totalmente vazio dentro dos parênteses
+

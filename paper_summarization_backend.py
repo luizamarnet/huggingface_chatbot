@@ -3,7 +3,8 @@ warnings.filterwarnings('ignore')
 
 from langchain_huggingface import HuggingFaceEndpoint, HuggingFaceEmbeddings
 from langchain_community.document_loaders import PyPDFLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+#from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from langchain_core.prompts import PromptTemplate

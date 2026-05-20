@@ -1,3 +1,14 @@
+---
+title: Chatbot Longchain
+emoji: 🤖
+colorFrom: yellow
+colorTo: brown
+sdk: gradio
+sdk_version: 4.44.1
+app_file: web_app_paper_summarization.py
+pinned: false
+---
+
 # RAG with Hugging Face and Web App with Gradio[🚧 Project Under Construction 🚧]
 
 This repository aims to create web apps with gradio, using RAG with Hugging face for extracting information from papers.

@@ -1,7 +1,7 @@
 import warnings
 warnings.filterwarnings('ignore')
 
-from langchain_huggingface import HuggingFaceEndpoint, HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEndpoint, HuggingFaceEmbeddings, ChatHuggingFace
 from langchain_community.document_loaders import PyPDFLoader
 #from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -24,12 +24,14 @@ def get_llm():
     model_id = "deepseek-ai/DeepSeek-R1"   #"meta-llama/Llama-3.1-8B-Instruct" #"Qwen/Qwen2.5-7B-Instruct"   #meta-llama/Meta-Llama-3-8B-Instruct 
     llm = HuggingFaceEndpoint(
         repo_id=model_id,
-        task="text-generation", #"conversational",
+        task="conversational", #"conversational",
         max_new_tokens=512,
         temperature=0.1,
         #huggingfacehub_api_token=os.getenv(huggingfacehub_api_token)
         huggingfacehub_api_token=huggingfacehub_api_token
     )
+    chat_model = ChatHuggingFace(llm=llm)
+    return chat_model
     return llm
 
 ## 2. Document loader (Stays the same)

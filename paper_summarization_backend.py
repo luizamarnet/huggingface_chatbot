@@ -76,7 +76,7 @@ def retriever(file):
     splits = document_loader(file)
     chunks = text_splitter(splits)
     vectordb = vector_database(chunks)
-    return vectordb.as_retriever()
+    return vectordb.as_retriever(search_kwargs={"k": 8})
 
 ## 7. QA Chain (Updated to use HF LLM)
 def retriever_qa(file):
@@ -101,8 +101,6 @@ def retriever_qa(file):
 
     ##############
 
-    # ESTRATÉGIA PARA AUTORES: Lê diretamente o início do documento
-    primeira_pagina = document_loader(file)[0].page_content[:2000] # Pega os primeiros 2000 caracteres do PDF
     # Usamos o LLM diretamente (sem passar pelo RetrievalQA) para extrair os nomes
     prompt_title = f"""Analise o texto do topo de um artigo científico abaixo e extraia APENAS os nomes dos autores que escreveram este paper.
     Os nomes dos autores do paper geralmente estão localizados logo abaixo do título principal no contexto fornecido.
@@ -117,8 +115,6 @@ def retriever_qa(file):
     # Dependendo da versão, use: authors_output = authors_res.content se retornar um objeto de mensagem
     authors = authors_res if isinstance(authors_res, str) else authors_res.content
 
-    # ESTRATÉGIA PARA AUTORES: Lê diretamente o início do documento
-    primeira_pagina = document_loader(file)[0].page_content[:2000] # Pega os primeiros 2000 caracteres do PDF
     # Usamos o LLM diretamente (sem passar pelo RetrievalQA) para extrair os nomes
     prompt_affiliation = f"""Analise o texto do topo de um artigo científico abaixo e extraia APENAS as afiliações dos autores.
     As afiliações geralmente estão localizadas próximas aos nomes dos autores dos artigos e ou conectados a esses nomes por caracteres sobreescritos ou sobescritos.
@@ -178,7 +174,7 @@ def retriever_qa(file):
                                     chain_type_kwargs={"prompt": QA_CHAIN_PROMPT})
     # Note: The input text layer might contain slight character encoding artifacts (e.g., messed up accents or symbols in names). Automatically correct these names to their standard academic spelling if you recognize them.
     
-    topic_res = qa.invoke("What is the main topic of this paper? ")
+    topic_res = qa.invoke("What is the core objective and what are main contributions of the study in this paper?")
     topic = topic_res["result"]
     
     conclusions_res = qa.invoke("What are this paper's conclusions? ")

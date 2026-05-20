@@ -71,21 +71,27 @@ def vector_database(chunks):
     vectordb = Chroma.from_documents(chunks, embedding_model)
     return vectordb
 
-## 6. Retriever (Stays the same)
+'''## 6. Retriever (Stays the same)
 def retriever(file):
     splits = document_loader(file)
     chunks = text_splitter(splits)
     vectordb = vector_database(chunks)
     return vectordb.as_retriever(search_kwargs={"k": 8})
+'''
 
 ## 7. QA Chain (Updated to use HF LLM)
 def retriever_qa(file):
     
+    splits = document_loader(file)
+    chunks = text_splitter(splits)
+    vectordb = vector_database(chunks)
+    retriever_obj = vectordb.as_retriever(search_kwargs={"k": 8})
+
     llm = get_llm()
-    retriever_obj = retriever(file)
+    
 
     # ESTRATÉGIA PARA AUTORES: Lê diretamente o início do documento
-    primeira_pagina = document_loader(file)[0].page_content[:2000] # Pega os primeiros 2000 caracteres do PDF
+    primeira_pagina = splits[0].page_content[:2000] # Pega os primeiros 2000 caracteres do PDF
     # Usamos o LLM diretamente (sem passar pelo RetrievalQA) para extrair os nomes
     prompt_autores = f"""Analise o texto do topo de um artigo científico abaixo e extraia APENAS o título do artigo.
     Do not try to make up the answer.
@@ -133,31 +139,24 @@ def retriever_qa(file):
 
 
     ##############
-
+    
     template = """You are an AI assistant specialized in analyzing scientific papers.
-    Using the following context excerpts retrieved from a scientific paper  PDF answer the final question.
+    Using the following context excerpts retrieved from a scientific paper PDF, answer the final question.
     
     CRITICAL INSTRUCTIONS:
-    3. Every piece of context ends with a tag like '[SOURCE: Page X]'. You MUST cite this page and section alongside your findings.
-    4. For every key point, provide a short, exact verbatim quote (4-5 words) from the text to allow the user to find it via Ctrl+F.
+    1. Every chunck of context ends with a tag like '[SOURCE: Page X]'. You MUST read this tag and explicitly state the exact Page number and Section in your answer.
+    2. Provide a direct, professional answer based on the facts, results, and discussions present in the text.
+    3. If the exact information for the answer is split across several text chunks, synthesize them logically without adding external assumptions.
+    4. Focus heavily on explicit paper abstract, goals, core methodologies, results, and conclusions.
+    5. If you can infer the answer from results, do not write disclaimers about information not being explicit.
+    6. Do not try to make up or guess information. If you could not retrieve the answer from the text, just say it.
+    7. Answer examples: 
+        (a) The model achieves X [Page 4, Section M](Search phrase: "Our empirical findings indicate")
+        (b) The model achieves X [Page 4, Section M](Search phrases: "Our empirical findings indicate", "The gain percentage was")
+        (b) The model achieves X [Page 4, Section M](Search phrases: "Our empirical findings indicate")[Page 7, Section N](Search phrases: "The gain percentage was")
+    8. STRICT CONSTRAINT FOR SEARCH PHRASES: For every fact you extract, you MUST provide a short 'Search phrase' verbatim quote. This quote MUST BE EXACTLY BETWEEN 4 AND 5 WORDS. NEVER exceed 5 words per quote.
+    9. Answering using the formatting presented in bullet point 7 is mandatory.
 
-    Context:
-
-
-    1. Every chunk in the context ends with a tag like '[SOURCE: This text is strictly from Page X of the PDF]'. 
-    2. You MUST read this tag and explicitly state the exact Page number in your answer next to the fact you extract.
-    3. Also include the section where the information was found.
-    4. For every fact you extract, provide a short, exact 'Search phrase' verbatim quote (4-5 words) from the text where it starts. This allows the user to find it via search.
-    5. Provide a direct, professional answer based on the facts, results, and discussions present in the text.
-    6. If the exact information for the answer is split across several text chunks, synthesize them logically without adding external assumptions.
-    7. If you can infer the answer, do not write disclaimers about information not being explicit and you infering the answer.
-    8. Do not try to make up the answer, do not make up information. If you could not retrieve the answer from the text, just say it.
-    9. Answer examples: 
-        (a) The model achieves X [Page 4, Section M](Search phrase: "Our empirical findings indicate...")
-        (b) The model achieves X [Page 4, Section M](Search phrases: "Our empirical findings indicate...", "The gain percentage was...")
-        (c) The model achieves X [Page 4, Section M](Search phrases: "Our empirical findings indicate...")[Page 5, Section M](Search phrases: "Our methos achieved better...", "The gain percentage was...")
-        (d) The model achieves X [Page 4, Section M](Search phrases: "Our empirical findings indicate...")[Page 5, Section N](Search phrases: "Our methos achieved better...", "The gain percentage was...")
-    10. Unless you don't have the answer (pullet point 8.), answering using the format presented above in bullet point 9. is mandatory.
     Context:
     {context}
 
@@ -174,10 +173,10 @@ def retriever_qa(file):
                                     chain_type_kwargs={"prompt": QA_CHAIN_PROMPT})
     # Note: The input text layer might contain slight character encoding artifacts (e.g., messed up accents or symbols in names). Automatically correct these names to their standard academic spelling if you recognize them.
     
-    topic_res = qa.invoke("What is the core objective and what are main contributions of the study in this paper? Look closely at the first sections of the paperm such as the abstract and the introduction or its correspondent.")
+    topic_res = qa.invoke("What is the main topic of this paper? State the core objective and contributions")
     topic = topic_res["result"]
     
-    conclusions_res = qa.invoke("What are this paper's conclusions? ")
+    conclusions_res = qa.invoke("What are the main conclusions of this study? State the primary takeaway of the conclusion ")
     conclusions = conclusions_res['result']
 
     response = [title, authors, affiliation, topic, conclusions]

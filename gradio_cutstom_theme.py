@@ -7,7 +7,7 @@ class EarthYellow:
     )
     css = """
     button.primary {
-        color: #854D0E /* var(--block-title-text-color) !important; / color: #FFFFFF !important;   Submit button text color (e.g., White) */
+        color: #854D0E !important /* var(--block-title-text-color) !important; / color: #FFFFFF !important;   Submit button text color (e.g., White) */
     }
     button.secondary {
         color: #FEF9C3 !important;  /* color: orange !important;   Clear button text color (e.g., Orange) */

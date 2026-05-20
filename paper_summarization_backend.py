@@ -6,6 +6,7 @@ from langchain_community.document_loaders import PyPDFLoader
 #from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
+from chromadb.config import Settings
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from langchain_core.prompts import PromptTemplate
 from langchain_classic.chains import RetrievalQA
@@ -14,11 +15,13 @@ from langchain_community.document_loaders import PyMuPDFLoader
 import unicodedata
 import os
 
+
 load_dotenv()
 
 huggingfacehub_api_token = os.getenv("OPENAI_API_KEY").strip()
 ## 1. LLM (Hugging Face version)
 def get_llm():
+
     model_id = "Qwen/Qwen2.5-7B-Instruct"   #"meta-llama/Llama-3.1-8B-Instruct" #"Qwen/Qwen2.5-7B-Instruct"   #meta-llama/Meta-Llama-3-8B-Instruct 
     llm = HuggingFaceEndpoint(
         repo_id=model_id,
@@ -28,8 +31,7 @@ def get_llm():
         #huggingfacehub_api_token=os.getenv(huggingfacehub_api_token)
         huggingfacehub_api_token=huggingfacehub_api_token
     )
-    chat_model = ChatHuggingFace(llm=llm)
-    return chat_model
+    return llm
 
 ## 2. Document loader (Stays the same)
 def document_loader(file):
@@ -66,9 +68,18 @@ def hf_embedding():
 
 ## 5. Vector db (Updated to use HF embeddings)
 def vector_database(chunks):
+
     embedding_model = hf_embedding()
+    # Force Chroma to initialize a completely clean, non-persistent registry on every click
+    ephemeral_client = chromadb.EphemeralClient()
+    
     # Note: Chroma will create an in-memory db here
-    vectordb = Chroma.from_documents(chunks, embedding_model)
+    vectordb = Chroma.from_documents(
+        documents=chunks,
+        embedding=embedding_model,
+        client=ephemeral_client  # Binds execution exclusively to this live transaction
+    )
+    
     return vectordb
 
 '''## 6. Retriever (Stays the same)

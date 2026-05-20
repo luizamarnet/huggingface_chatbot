@@ -174,7 +174,7 @@ def retriever_qa(file):
                                     chain_type_kwargs={"prompt": QA_CHAIN_PROMPT})
     # Note: The input text layer might contain slight character encoding artifacts (e.g., messed up accents or symbols in names). Automatically correct these names to their standard academic spelling if you recognize them.
     
-    topic_res = qa.invoke("What is the core objective and what are main contributions of the study in this paper?")
+    topic_res = qa.invoke("What is the core objective and what are main contributions of the study in this paper? Look closely at the first sections of the paperm such as the abstract and the introduction or its correspondent.")
     topic = topic_res["result"]
     
     conclusions_res = qa.invoke("What are this paper's conclusions? ")

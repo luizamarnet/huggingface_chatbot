@@ -216,11 +216,11 @@ def retriever_qa(file):
 
     topic_res = rag_chain.invoke({"query": "What is the main topic of this paper? State the core objective and contributions",
                           "cache_id": cache_buster})
-    topic = topic_res["result"]
+    topic = topic_res#["result"]
     
     conclusions_res = rag_chain.invoke({"query": "What are the main conclusions of this study? State the primary takeaway of the conclusion ",
                                 "cache_id": cache_buster})
-    conclusions = conclusions_res['result']
+    conclusions = conclusions_res#['result']
 
     response = [title, authors, affiliation, topic, conclusions]
 

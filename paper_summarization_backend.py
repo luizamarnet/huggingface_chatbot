@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 from langchain_community.document_loaders import PyMuPDFLoader
 import unicodedata
 import os
+import gc
 
 
 load_dotenv()

@@ -24,7 +24,7 @@ def get_llm():
     model_id = "meta-llama/Meta-Llama-3-8B" #"deepseek-ai/DeepSeek-R1"   #"meta-llama/Llama-3.1-8B-Instruct" #"Qwen/Qwen2.5-7B-Instruct"   #meta-llama/Meta-Llama-3-8B-Instruct 
     llm = HuggingFaceEndpoint(
         repo_id=model_id,
-        task="conversational", #"conversational",
+        task="text-generation", #"conversational",
         max_new_tokens=512,
         temperature=0.1,
         #huggingfacehub_api_token=os.getenv(huggingfacehub_api_token)

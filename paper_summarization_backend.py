@@ -11,6 +11,7 @@ from langchain_core.prompts import PromptTemplate
 from langchain_classic.chains import RetrievalQA
 from dotenv import load_dotenv
 from langchain_community.document_loaders import PyMuPDFLoader
+from langchain_core.output_parsers import StrOutputParser
 import unicodedata
 import secrets
 import os
@@ -58,7 +59,7 @@ def text_splitter(data):
         # Strip trailing white spaces and skip empty entries
         if fixed_text.strip():
             page_num = c.metadata.get("page", 0) + 1
-            c.page_content = f"{fixed_text}\n\n[SOURCE: This text is strictly from Page {page_num} of the PDF]"
+            c.page_content = f"{fixed_text}\n[SOURCE: This text is strictly from Page {page_num} of the PDF]"
             clean_chunks.append(c)
     return clean_chunks
 
@@ -92,6 +93,11 @@ def retriever(file):
     vectordb = vector_database(chunks)
     return vectordb.as_retriever(search_kwargs={"k": 8})
 '''
+
+# Helper to convert document arrays into clean formatted strings for the prompt
+def format_docs(docs):
+    return "\n\n".join(doc.page_content for doc in docs)
+
 
 ## 7. QA Chain (Updated to use HF LLM)
 def retriever_qa(file):
@@ -186,18 +192,33 @@ def retriever_qa(file):
         template=template,
     )
     
-    qa = RetrievalQA.from_chain_type(llm=llm, 
+    '''qa = RetrievalQA.from_chain_type(llm=llm, 
                                     chain_type="stuff", 
                                     retriever=retriever_obj, 
                                     input_key="query", 
                                     chain_type_kwargs={"prompt": QA_CHAIN_PROMPT})
     # Note: The input text layer might contain slight character encoding artifacts (e.g., messed up accents or symbols in names). Automatically correct these names to their standard academic spelling if you recognize them.
-    
-    topic_res = qa.invoke({"query": "What is the main topic of this paper? State the core objective and contributions",
+    '''
+
+    # --- MODERNISED STATELESS LCEL CHAIN PIPELINE ---
+    # This architecture natively allows routing cache_id and query safely to your prompt
+    rag_chain = (
+        {
+            "context": lambda x: format_docs(retriever_obj.get_relevant_documents(x["query"])),
+            "query": lambda x: x["query"],
+            "cache_id": lambda x: x["cache_id"]
+        }
+
+        | QA_CHAIN_PROMPT
+        | llm
+        | StrOutputParser()
+    )
+
+    topic_res = rag_chain.invoke({"query": "What is the main topic of this paper? State the core objective and contributions",
                           "cache_id": cache_buster})
     topic = topic_res["result"]
     
-    conclusions_res = qa.invoke({"query": "What are the main conclusions of this study? State the primary takeaway of the conclusion ",
+    conclusions_res = rag_chain.invoke({"query": "What are the main conclusions of this study? State the primary takeaway of the conclusion ",
                                 "cache_id": cache_buster})
     conclusions = conclusions_res['result']
 

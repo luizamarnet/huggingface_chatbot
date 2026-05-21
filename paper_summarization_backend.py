@@ -226,7 +226,8 @@ def retriever_qa(file):
 
     # --- CRITICAL FIX 2: FORCE DESTRUCTION OF COMPILATION OBJECTS ---
     # Manually delete references to prevent memory retention across session runs
-    del qa
+    #del qa
+    del rag_chain
     del retriever_obj
     del vectordb
     del chunks

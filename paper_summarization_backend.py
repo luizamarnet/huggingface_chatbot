@@ -179,16 +179,17 @@ def retriever_qa(file):
     Context:
     {context}
 
-    Question: {question}
+    Question: {query}
     Answer with page and section citations:"""
     QA_CHAIN_PROMPT = PromptTemplate(
-        input_variables=["context", "question", "cache_id"],
+        input_variables=["context", "query", "cache_id"],
         template=template,
     )
     
     qa = RetrievalQA.from_chain_type(llm=llm, 
                                     chain_type="stuff", 
                                     retriever=retriever_obj, 
+                                    input_key="query", 
                                     chain_type_kwargs={"prompt": QA_CHAIN_PROMPT})
     # Note: The input text layer might contain slight character encoding artifacts (e.g., messed up accents or symbols in names). Automatically correct these names to their standard academic spelling if you recognize them.
     

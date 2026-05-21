@@ -30,8 +30,8 @@ def get_llm():
         #huggingfacehub_api_token=os.getenv(huggingfacehub_api_token)
         huggingfacehub_api_token=huggingfacehub_api_token
     )
-    chat_model = ChatHuggingFace(llm=llm)
-    return chat_model
+    #chat_model = ChatHuggingFace(llm=llm)
+    #return chat_model
     return llm
 
 ## 2. Document loader (Stays the same)

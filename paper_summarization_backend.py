@@ -21,18 +21,18 @@ huggingfacehub_api_token = os.getenv("OPENAI_API_KEY").strip()
 ## 1. LLM (Hugging Face version)
 def get_llm():
 
-    model_id = "meta-llama/Llama-2-7b-chat-hf" #"deepseek-ai/DeepSeek-R1"   #"meta-llama/Llama-3.1-8B-Instruct" #"Qwen/Qwen2.5-7B-Instruct"   #meta-llama/Meta-Llama-3-8B-Instruct 
+    model_id = "deepseek-ai/DeepSeek-R1"   #"meta-llama/Llama-3.1-8B-Instruct" #"Qwen/Qwen2.5-7B-Instruct"   #meta-llama/Meta-Llama-3-8B-Instruct 
     llm = HuggingFaceEndpoint(
         repo_id=model_id,
-        task="text-generation", #"conversational",
+        task="conversational", #"conversational",
         max_new_tokens=512,
         temperature=0.1,
         #huggingfacehub_api_token=os.getenv(huggingfacehub_api_token)
         huggingfacehub_api_token=huggingfacehub_api_token
     )
-    #chat_model = ChatHuggingFace(llm=llm)
-    #return chat_model
-    return llm
+    chat_model = ChatHuggingFace(llm=llm)
+    return chat_model
+    #return llm
 
 ## 2. Document loader (Stays the same)
 def document_loader(file):

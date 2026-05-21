@@ -194,6 +194,18 @@ def retriever_qa(file):
 
     response = [title, authors, affiliation, topic, conclusions]
 
+    # --- CRITICAL FIX 2: FORCE DESTRUCTION OF COMPILATION OBJECTS ---
+    # Manually delete references to prevent memory retention across session runs
+    del qa
+    del retriever_obj
+    del vectordb
+    del chunks
+    del splits
+    del llm
+    
+    # Execute full hardware garbage collection to flush memory blocks completely
+    gc.collect()
+
     return response
 
 

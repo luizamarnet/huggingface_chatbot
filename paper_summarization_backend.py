@@ -204,7 +204,7 @@ def retriever_qa(file):
     # This architecture natively allows routing cache_id and query safely to your prompt
     rag_chain = (
         {
-            "context": lambda x: format_docs(retriever_obj.get_relevant_documents(x["query"])),
+            "context": lambda x: format_docs(retriever_obj.invoke(x["query"])),
             "query": lambda x: x["query"],
             "cache_id": lambda x: x["cache_id"]
         }

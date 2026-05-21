@@ -12,6 +12,7 @@ from langchain_classic.chains import RetrievalQA
 from dotenv import load_dotenv
 from langchain_community.document_loaders import PyMuPDFLoader
 import unicodedata
+import secrets
 import os
 import gc
 
@@ -21,7 +22,7 @@ load_dotenv()
 huggingfacehub_api_token = os.getenv("OPENAI_API_KEY").strip()
 ## 1. LLM (Hugging Face version)
 def get_llm():
-
+    
     model_id = "deepseek-ai/DeepSeek-R1"   #"meta-llama/Llama-3.1-8B-Instruct" #"Qwen/Qwen2.5-7B-Instruct"   #meta-llama/Meta-Llama-3-8B-Instruct 
     llm = HuggingFaceEndpoint(
         repo_id=model_id,
@@ -95,6 +96,9 @@ def retriever(file):
 ## 7. QA Chain (Updated to use HF LLM)
 def retriever_qa(file):
     
+    # Create a completely random string to bypass Hugging Face's remote server caching
+    cache_buster = secrets.token_hex(4)
+
     splits = document_loader(file)
     chunks = text_splitter(splits)
     vectordb = vector_database(chunks)
@@ -154,6 +158,7 @@ def retriever_qa(file):
     ##############
     
     template = """You are an AI assistant specialized in analyzing scientific papers.
+    [Session Tracker Security Token: {cache_id}]
     Using the following context excerpts retrieved from a scientific paper PDF, answer the final question.
     
     CRITICAL INSTRUCTIONS:
@@ -177,7 +182,7 @@ def retriever_qa(file):
     Question: {question}
     Answer with page and section citations:"""
     QA_CHAIN_PROMPT = PromptTemplate(
-        input_variables=["context", "question"],
+        input_variables=["context", "question", "cache_id"],
         template=template,
     )
     
@@ -187,10 +192,12 @@ def retriever_qa(file):
                                     chain_type_kwargs={"prompt": QA_CHAIN_PROMPT})
     # Note: The input text layer might contain slight character encoding artifacts (e.g., messed up accents or symbols in names). Automatically correct these names to their standard academic spelling if you recognize them.
     
-    topic_res = qa.invoke("What is the main topic of this paper? State the core objective and contributions")
+    topic_res = qa.invoke({"query": "What is the main topic of this paper? State the core objective and contributions",
+                          "cache_id": cache_buster})
     topic = topic_res["result"]
     
-    conclusions_res = qa.invoke("What are the main conclusions of this study? State the primary takeaway of the conclusion ")
+    conclusions_res = qa.invoke({"query": "What are the main conclusions of this study? State the primary takeaway of the conclusion ",
+                                "cache_id": cache_buster})
     conclusions = conclusions_res['result']
 
     response = [title, authors, affiliation, topic, conclusions]

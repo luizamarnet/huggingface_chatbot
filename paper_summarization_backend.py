@@ -127,9 +127,9 @@ def retriever_qa(file):
 
     llm = get_llm()
     
-
+    print(splits[0].page_content[:2000])
     # ESTRATÉGIA PARA AUTORES: Lê diretamente o início do documento
-    first_page = splits[0].page_content[:2000] # Pega os primeiros 2000 caracteres do PDF
+    first_page = splits[0].page_content[:4000] # Pega os primeiros 2000 caracteres do PDF
     # Usamos o LLM diretamente (sem passar pelo RetrievalQA) para extrair os nomes
     prompt_title = f"""Analyze the text at the top of the scientific article below, and extract only the article's title.
     Do not try to make up the answer.

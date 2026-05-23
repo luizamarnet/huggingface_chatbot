@@ -9,6 +9,14 @@ app_file: web_app_paper_summarization.py
 pinned: false
 ---
 
+<style>
+/* Esconde a tabela gerada automaticamente pelo interpretador do GitHub */
+.gollum-markdown-content table:first-of-type,
+.markdown-body table:first-of-type {
+    display: none !important;
+}
+</style>
+
 # RAG with Hugging Face and Web App with Gradio[🚧 Project Under Construction 🚧]
 
 This repository aims to create web apps with gradio, using RAG with Hugging face for extracting information from papers.

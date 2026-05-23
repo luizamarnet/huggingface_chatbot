@@ -1,4 +1,3 @@
-<!--
 ---
 title: Chatbot Longchain
 emoji: 🤖
@@ -9,7 +8,6 @@ sdk_version: 6.14.0
 app_file: web_app_paper_summarization.py
 pinned: false
 ---
--->
 
 # RAG with Hugging Face and Web App with Gradio[🚧 Project Under Construction 🚧]
 

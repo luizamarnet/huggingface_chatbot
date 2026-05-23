@@ -2,7 +2,6 @@ import warnings
 warnings.filterwarnings('ignore')
 
 from langchain_huggingface import HuggingFaceEndpoint, HuggingFaceEmbeddings, ChatHuggingFace
-from langchain_huggingface import HuggingFaceEndpointEmbeddings
 from langchain_community.document_loaders import PyPDFLoader
 #from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -69,42 +68,23 @@ def hf_embedding():
     # 'all-MiniLM-L6-v2' is fast, free, and runs locally or via API
     # It is a direct competitor to IBM's Slate model
     model_name = "sentence-transformers/all-MiniLM-L6-v2"
-    
     return HuggingFaceEmbeddings(model_name=model_name)
 
 ## 5. Vector db (Updated to use HF embeddings)
 def vector_database(chunks):
 
     embedding_model = hf_embedding()
-    
-    # 1. Force Chroma to initialize a completely clean, non-persistent registry
+    # Force Chroma to initialize a completely clean, non-persistent registry on every click
     ephemeral_client = chromadb.EphemeralClient()
     
-    # 2. Generate a totally unique collection name for this specific file run
-    # This prevents the second run from conflicting with the "langchain" default name
-    #unique_collection_name = f"paper_{secrets.token_hex(4)}"
-
-    fixed_name = "current_paper_collection"
-    # Safely clear out any lingering data with the same name in this session thread
-    try:
-        ephemeral_client.delete_collection(name=fixed_name)
-    except Exception:
-        pass # Collection didn't exist yet, safe to proceed
-    
-    
-    # 3. Bind execution exclusively to this live transaction with a unique ID
+    # Note: Chroma will create an in-memory db here
     vectordb = Chroma.from_documents(
         documents=chunks,
         embedding=embedding_model,
-        client=ephemeral_client,
-        collection_name=fixed_name # Keeps it fixed so Hugging Face can utilize its server-side routing cache
+        client=ephemeral_client  # Binds execution exclusively to this live transaction
     )
     
     return vectordb
-
-   
-        
-    
 
 '''## 6. Retriever (Stays the same)
 def retriever(file):

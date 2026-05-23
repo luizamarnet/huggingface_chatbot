@@ -24,7 +24,7 @@ huggingfacehub_api_token = os.getenv("OPENAI_API_KEY").strip()
 ## 1. LLM (Hugging Face version)
 def get_llm():
     
-    model_id = "deepseek-ai/DeepSeek-R1"   #"meta-llama/Llama-3.1-8B-Instruct" #"Qwen/Qwen2.5-7B-Instruct"   #meta-llama/Meta-Llama-3-8B-Instruct 
+    model_id = "meta-llama/Llama-3.1-8B-Instruct" #"deepseek-ai/DeepSeek-R1"   #"meta-llama/Llama-3.1-8B-Instruct" #"Qwen/Qwen2.5-7B-Instruct"   #meta-llama/Meta-Llama-3-8B-Instruct 
     llm = HuggingFaceEndpoint(
         repo_id=model_id,
         task="conversational", #"conversational",

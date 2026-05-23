@@ -127,7 +127,6 @@ def retriever_qa(file):
 
     llm = get_llm()
     
-    print(splits[0].page_content[:2000])
     # ESTRATÉGIA PARA AUTORES: Lê diretamente o início do documento
     first_page = splits[0].page_content[:4000] # Pega os primeiros 2000 caracteres do PDF
     # Usamos o LLM diretamente (sem passar pelo RetrievalQA) para extrair os nomes

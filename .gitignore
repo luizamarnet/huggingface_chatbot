@@ -18,6 +18,8 @@ faiss_index/
 *.docx
 *.txt
 !requirements.txt
+#README.md
+
 
 # === Python Runtime and Caches ===
 __pycache__/

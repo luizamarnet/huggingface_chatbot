@@ -74,15 +74,30 @@ def hf_embedding():
 def vector_database(chunks):
 
     embedding_model = hf_embedding()
-    # Force Chroma to initialize a completely clean, non-persistent registry on every click
+    
+    # 1. Force Chroma to initialize a completely clean, non-persistent registry
     ephemeral_client = chromadb.EphemeralClient()
     
-    # Note: Chroma will create an in-memory db here
+    # 2. Generate a totally unique collection name for this specific file run
+    # This prevents the second run from conflicting with the "langchain" default name
+    #unique_collection_name = f"paper_{secrets.token_hex(4)}"
+
+    fixed_name = "current_paper_collection"
+    # Safely clear out any lingering data with the same name in this session thread
+    try:
+        ephemeral_client.delete_collection(name=fixed_name)
+    except Exception:
+        pass # Collection didn't exist yet, safe to proceed
+    
+    
+    # 3. Bind execution exclusively to this live transaction with a unique ID
     vectordb = Chroma.from_documents(
         documents=chunks,
         embedding=embedding_model,
-        client=ephemeral_client  # Binds execution exclusively to this live transaction
+        client=ephemeral_client,
+        collection_name=fixed_name # Keeps it fixed so Hugging Face can utilize its server-side routing cache
     )
+    
     
     return vectordb
 

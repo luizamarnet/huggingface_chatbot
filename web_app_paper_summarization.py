@@ -7,10 +7,10 @@ with gr.Blocks(theme=earth_yellow.theme, css=earth_yellow.css) as rag_applicatio
     gr.HTML("""
     <div style="text-align: center; margin-bottom: 5px;">
         <h1 style="font-size: 2.5em; font-weight: bold; color: #6b3c10; margin-bottom: 5px;">
-            My Own Personal Bot
+            My Own Personal Bot for Academic Papers
         </h1>
         <p style="font-size: 1.2em; color: #6b3c10;">
-            Upload a PDF document. The chatbot will extract key information using the provided document.
+            Upload a PDF of a Academic Paper. The chatbot will extract key information using the provided document.
         </p>
     </div>
     """)

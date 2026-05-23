@@ -129,47 +129,47 @@ def retriever_qa(file):
     
 
     # ESTRATÉGIA PARA AUTORES: Lê diretamente o início do documento
-    primeira_pagina = splits[0].page_content[:2000] # Pega os primeiros 2000 caracteres do PDF
+    first_page = splits[0].page_content[:2000] # Pega os primeiros 2000 caracteres do PDF
     # Usamos o LLM diretamente (sem passar pelo RetrievalQA) para extrair os nomes
-    prompt_autores = f"""Analise o texto do topo de um artigo científico abaixo e extraia APENAS o título do artigo.
+    prompt_title = f"""Analyze the text at the top of the scientific article below, and extract only the article's title.
     Do not try to make up the answer.
-    Return only the title of the article or a phrase saying you could not extract the names from  the text.
-    Texto do Artigo:
-    {primeira_pagina}
+    Return only the title of the article or a phrase saying you could not extract this information from the text. Answer in English.
+    Article's Text:
+    {first_page}
     Title:"""
     # Invoca o modelo de chat diretamente
-    authors_res = llm.invoke(prompt_autores)
+    title_res = llm.invoke(prompt_title)
     # Dependendo da versão, use: authors_output = authors_res.content se retornar um objeto de mensagem
-    title = authors_res if isinstance(authors_res, str) else authors_res.content
+    title = title_res if isinstance(title_res, str) else title_res.content
 
 
     ##############
 
     # Usamos o LLM diretamente (sem passar pelo RetrievalQA) para extrair os nomes
-    prompt_title = f"""Analise o texto do topo de um artigo científico abaixo e extraia APENAS os nomes dos autores que escreveram este paper.
-    Os nomes dos autores do paper geralmente estão localizados logo abaixo do título principal no contexto fornecido.
-    Retorne apenas os nomes, de forma direta, separados por virgula e com um ponto no final. O ultimo e penúltimo autores devem ser separados pela palavra e
+    prompt_authors = f"""Analyze the text at the top of the scientific article below, and extract only the names of the authors who wrote this paper.
+    The authors' names are usually located just below the main title in the given context.
+    Return only the names, in a straightforward manner, separated by commas and with a period at the end. The second last and last authors should be separated by the word "and".
     Do not try to make up the answer.
-    If you don't find the answer, return a phrase saying you could not extract the names from  the text.
-    Texto do Artigo:
-    {primeira_pagina}
-    Autores:"""
+    If you don't find the answer, return a phrase saying you could not extract the names from the text.
+    Note: These names might contain slight character encoding artifacts (e.g., messed-up accents or symbols in names). Automatically correct these names to their standard academic spelling if you recognize them.
+    Article Text:
+    {first_page}
+    Authors:"""
     # Invoca o modelo de chat diretamente
-    authors_res = llm.invoke(prompt_title)
+    authors_res = llm.invoke(prompt_authors)
     # Dependendo da versão, use: authors_output = authors_res.content se retornar um objeto de mensagem
     authors = authors_res if isinstance(authors_res, str) else authors_res.content
 
     # Usamos o LLM diretamente (sem passar pelo RetrievalQA) para extrair os nomes
-    prompt_affiliation = f"""Analise o texto do topo de um artigo científico abaixo e extraia APENAS as afiliações dos autores.
-    As afiliações geralmente estão localizadas próximas aos nomes dos autores dos artigos e ou conectados a esses nomes por caracteres sobreescritos ou sobescritos.
-    Retorne apenas as afiliações, uma em cada linha.
-    Caso junto com o nome da instituicao venha acompanhada da informacao dos paí, cidade ou estado onde a mesma se encontra (e nao como parte do nome da institucao), essas informacoes de localidade devem vir entre parenteses. 
+    prompt_affiliation = f"""Analyze the text at the top of the scientific article below, and extract only the authors' affiliations.
+    Affiliations are usually located near the authors' names in the articles and/or connected to those names by superscript or subscript characters.
+    Return only the affiliations, one per line.
+    If the institution's name is accompanied by information about the country, city, or state where it is located (and not as part of the institution's name), this location information should be in parentheses.
     Do not try to make up the answer.
-    If you don't find the answer, return a phrase saying you could not extract the names from  the text.
-    Note: The input text layer might contain slight character encoding artifacts (e.g., messed up accents or symbols in names). Automatically correct these names to their standard academic spelling if you recognize them.
-    Texto do Artigo:
-    {primeira_pagina}
-    Afiliações (e.g. ChaBot University (Country)):"""
+    If you don't find the answer, return a phrase saying you could not extract the affiliations from the text.
+    Article's Text:
+    {first_page}
+    Affiliation (e.g. ChaBot University (Country)):"""
     # Invoca o modelo de chat diretamente
     affiliation_res = llm.invoke(prompt_affiliation)
     # Dependendo da versão, use: authors_output = authors_res.content se retornar um objeto de mensagem
@@ -239,7 +239,7 @@ def retriever_qa(file):
 
     response = [title, authors, affiliation, topic, conclusions]
 
-    # --- CRITICAL FIX 2: FORCE DESTRUCTION OF COMPILATION OBJECTS ---
+    '''# --- CRITICAL FIX 2: FORCE DESTRUCTION OF COMPILATION OBJECTS ---
     # Manually delete references to prevent memory retention across session runs
     #del qa
     del rag_chain
@@ -250,7 +250,7 @@ def retriever_qa(file):
     del llm
     
     # Execute full hardware garbage collection to flush memory blocks completely
-    gc.collect()
+    gc.collect()'''
 
     return response
 

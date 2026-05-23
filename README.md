@@ -1,3 +1,4 @@
+<!--
 ---
 title: Chatbot Longchain
 emoji: 🤖
@@ -7,15 +8,8 @@ sdk: gradio
 sdk_version: 6.14.0
 app_file: web_app_paper_summarization.py
 pinned: false
----
-
-<style>
-/* Esconde a tabela gerada automaticamente pelo interpretador do GitHub */
-.gollum-markdown-content table:first-of-type,
-.markdown-body table:first-of-type {
-    display: none !important;
-}
-</style>
+---'''
+-->
 
 # RAG with Hugging Face and Web App with Gradio[🚧 Project Under Construction 🚧]
 

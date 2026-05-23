@@ -23,6 +23,7 @@ The user only needs to upload and submit the paper and the application provides 
 
 **Design Feature:** The app is engineered to provide the pages and sections utilized to extract the core objectives and conclusions. Each fact should includes a short, 4-to-5-word 'search phrase' that users can copy and paste into the original PDF to easily find and verify the app's answers. *(Note: This reference functionality is currently under optimization, by now it does not provide precise references, and will be fully refined in future updates).*
 
+**Application Link**:  Please test our live deployment [here](https://luizarmarnet-chatbot-longchain.hf.space) 
 
 ---
 
@@ -31,6 +32,7 @@ The user only needs to upload and submit the paper and the application provides 
 Designed for interactive, deep-dive document exploration.
 * **Free-Form Queries**: Provides an interface which allows users to ask any custom or open-ended question about the uploaded PDF content.
 
+**Application Link:** Given that this application has not yet been fully tested and the prompt logic requires further refinement, the live deployment link is not yet provided here.
 
 ## 🛠️ Technical Stack & Architecture
 
@@ -95,9 +97,19 @@ Below are observations and evaluation notes for the **Automated Paper Informatio
 * The paper was submitted twice to this application. The extracted text in each result differed slightly but summarized the main topic, objectives, and conclusions quite well. However, in both trials, the app failed to identify that this paper also released a new public dataset.
 * Character decoding limitations were observed: the application failed to accurately reconstruct the special Unicode character `ą` in the author's name *Wąsowski*.
 
+  <img width="809" height="466" alt="image" src="https://github.com/user-attachments/assets/2e55fab7-8eb8-4c3e-8571-e0d9cde9a5e5" />
+  <img width="818" height="480" alt="image" src="https://github.com/user-attachments/assets/52ce4dfa-b26e-4650-8d49-c95dcf1b6155" />
+
+
 ### 2. Paper Evaluation: [MIMIR-UW: A Multipurpose Synthetic Dataset for Underwater Navigation and Inspection](https://www.researchgate.net/profile/Olaya-Alvarez-Tunon/publication/376503081_MIMIR-UW_A_Multipurpose_Synthetic_Dataset_for_Underwater_Navigation_and_Inspection/links/65c09fb71bed776ae32f3367/MIMIR-UW-A-Multipurpose-Synthetic-Dataset-for-Underwater-Navigation-and-Inspection.pdf)
 * In this test case, the system failed to recognize the dataset release (*MIMIR*) as the core contribution of the paper. The app stated that the primary objective was testing different SLAM algorithms on the MIMIR dataset. The true core objective was to publish the MIMIR dataset itself, which included testing visual SLAM and semantic segmentation algorithms.
+
+  <img width="799" height="538" alt="image" src="https://github.com/user-attachments/assets/906e84a1-b328-48e5-ae01-a22d376c9469" />
+
 
 ### 3. Paper Evaluation: [SubPipe: A Submarine Pipeline Inspection Dataset for Segmentation and Visual-inertial Localization](https://arxiv.org/pdf/2401.17907)
 * The application correctly identified that the primary objective was introducing a new dataset called *SubPipe*. However, it omitted the fact that it is a multipurpose dataset, profiling it strictly as a semantic segmentation dataset. 
 * While the extracted conclusions were not factually incorrect, the context synthesis lacked detail. The app discussed a 'model' and its performance results without properly explaining which model was used or how it correlated to the dataset released by the paper, leaving the user without understanding the correlation between the conclusions and the topic/objective of the paper.
+* The authors' affiliations were extracted correctly by the application, but the structural formatting drifted from the planned output configuration.
+
+  <img width="797" height="532" alt="image" src="https://github.com/user-attachments/assets/1225e7d1-9c6b-4a84-a4c0-f0fae06acf53" />

@@ -163,6 +163,7 @@ def retriever_qa(file):
     # Usamos o LLM diretamente (sem passar pelo RetrievalQA) para extrair os nomes
     prompt_affiliation = f"""Analyze the text at the top of the scientific article below, and extract only the authors' affiliations.
     Affiliations are usually located near the authors' names in the articles and/or connected to those names by superscript or subscript characters.
+    Affiliations can also be in a paragraph which explains which is the institution (affiliation) connected to which author.
     Return only the affiliations, one per line.
     If the institution's name is accompanied by information about the country, city, or state where it is located (and not as part of the institution's name), this location information should be in parentheses.
     Do not try to make up the answer.

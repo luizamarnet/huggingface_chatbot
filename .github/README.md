@@ -93,7 +93,7 @@ OPENAI_API_KEY=<your_hugging_face_token_here>
 
 Below are observations and evaluation notes for the **Automated Paper Information Extractor** application, with screenshots showcasing tests run on 3 different papers, in which our application achieved varying degrees of accuracy:
 
-### 1. Paper Evaluation: [Bridging the Sim-to-Real GAP for Underwater Image Segmentation](https://stellagrasshof.com/assets/pdf/2024_marnet_oceans.pdf)
+### 1. Paper: [Bridging the Sim-to-Real GAP for Underwater Image Segmentation](https://stellagrasshof.com/assets/pdf/2024_marnet_oceans.pdf)
 * The paper was submitted twice to this application. The extracted text in each result differed slightly but summarized the main topic, objectives, and conclusions quite well. However, in both trials, the app failed to identify that this paper also released a new public dataset.
 * Character decoding limitations were observed: the application failed to accurately reconstruct the special Unicode character `ą` in the author's name *Wąsowski*.
 
@@ -101,13 +101,13 @@ Below are observations and evaluation notes for the **Automated Paper Informatio
   <img width="818" height="480" alt="image" src="https://github.com/user-attachments/assets/52ce4dfa-b26e-4650-8d49-c95dcf1b6155" />
 
 
-### 2. Paper Evaluation: [MIMIR-UW: A Multipurpose Synthetic Dataset for Underwater Navigation and Inspection](https://www.researchgate.net/profile/Olaya-Alvarez-Tunon/publication/376503081_MIMIR-UW_A_Multipurpose_Synthetic_Dataset_for_Underwater_Navigation_and_Inspection/links/65c09fb71bed776ae32f3367/MIMIR-UW-A-Multipurpose-Synthetic-Dataset-for-Underwater-Navigation-and-Inspection.pdf)
+### 2. Paper: [MIMIR-UW: A Multipurpose Synthetic Dataset for Underwater Navigation and Inspection](https://www.researchgate.net/profile/Olaya-Alvarez-Tunon/publication/376503081_MIMIR-UW_A_Multipurpose_Synthetic_Dataset_for_Underwater_Navigation_and_Inspection/links/65c09fb71bed776ae32f3367/MIMIR-UW-A-Multipurpose-Synthetic-Dataset-for-Underwater-Navigation-and-Inspection.pdf)
 * In this test case, the system failed to recognize the dataset release (*MIMIR*) as the core contribution of the paper. The app stated that the primary objective was testing different SLAM algorithms on the MIMIR dataset. The true core objective was to publish the MIMIR dataset itself, which included testing visual SLAM and semantic segmentation algorithms.
 
   <img width="799" height="538" alt="image" src="https://github.com/user-attachments/assets/906e84a1-b328-48e5-ae01-a22d376c9469" />
 
 
-### 3. Paper Evaluation: [SubPipe: A Submarine Pipeline Inspection Dataset for Segmentation and Visual-inertial Localization](https://arxiv.org/pdf/2401.17907)
+### 3. Paper: [SubPipe: A Submarine Pipeline Inspection Dataset for Segmentation and Visual-inertial Localization](https://arxiv.org/pdf/2401.17907)
 * The application correctly identified that the primary objective was introducing a new dataset called *SubPipe*. However, it omitted the fact that it is a multipurpose dataset, profiling it strictly as a semantic segmentation dataset. 
 * While the extracted conclusions were not factually incorrect, the context synthesis lacked detail. The app discussed a 'model' and its performance results without properly explaining which model was used or how it correlated to the dataset released by the paper, leaving the user without understanding the correlation between the conclusions and the topic/objective of the paper.
 * The authors' affiliations were extracted correctly by the application, but the structural formatting drifted from the planned output configuration.

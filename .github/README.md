@@ -23,7 +23,9 @@ The user only needs to upload and submit the paper and the application provides 
 
 **Design Feature:** The app is engineered to provide the pages and sections utilized to extract the core objectives and conclusions. Each fact should includes a short, 4-to-5-word 'search phrase' that users can copy and paste into the original PDF to easily find and verify the app's answers. *(Note: This reference functionality is currently under optimization, by now it does not provide precise references, and will be fully refined in future updates).*
 
-**Application Link**:  Please test our live deployment [here](https://luizarmarnet-chatbot-longchain.hf.space) 
+<!-- **Application Link**:  Please test our live deployment [here](https://luizarmarnet-chatbot-longchain.hf.space) -->
+
+**Application Status:** The web application is temporarily unavailable due to hosting limitations on Hugging Face Spaces. I am currently working on finding an alternative hosting space to restore access. 
 
 ---
 
